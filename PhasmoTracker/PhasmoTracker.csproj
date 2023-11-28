@@ -10,21 +10,15 @@
 	<ApplicationIcon>Resources\appicon.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Resources\Dialog.png" />
-    <None Remove="Resources\Icons\Keyboard.png" />
-    <None Remove="Resources\Icons\Sanity.png" />
-    <None Remove="Resources\Icons\Settings.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Icons\Sanity.png" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
 
   <ItemGroup>
     <Resource Include="Resources\appicon.ico" />
     <Resource Include="Resources\Icons\Dialog.png" />
     <Resource Include="Resources\Icons\Keyboard.png" />
+	<Resource Include="Resources\Icons\Sanity.png" />
     <Resource Include="Resources\Icons\Settings.png" />
   </ItemGroup>
 

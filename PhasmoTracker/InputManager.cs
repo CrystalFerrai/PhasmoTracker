@@ -106,9 +106,9 @@ namespace PhasmoTracker
 #if DEBUG
 			if (modifiers != ModifierKeys.None)
 			{
-				Debug.Write($"({modifiers})");
+				System.Diagnostics.Debug.Write($"({modifiers})");
 			}
-			Debug.WriteLine($"↓ {key}");
+			System.Diagnostics.Debug.WriteLine($"↓ {key}");
 #endif
 
 			HashSet<InputAction>? list;
