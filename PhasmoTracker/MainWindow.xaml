@@ -1,0 +1,304 @@
+﻿<!--
+Copyright 2023 Crystal Ferrai
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<Window
+    x:Class="PhasmoTracker.MainWindow"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:PhasmoTracker"
+	xmlns:c="clr-namespace:PhasmoTracker.Controls"
+	xmlns:conv="clr-namespace:PhasmoTracker.Converters"
+    mc:Ignorable="d"
+    Title="PhasmoTracker"
+    Width="498"
+    Height="530"
+	Background="#ff000000"
+	ResizeMode="CanMinimize"
+	Style="{StaticResource {x:Type Window}}"
+    d:DataContext="{d:DesignInstance Type={x:Type local:MainWindowVM}, IsDesignTimeCreatable=False}">
+
+	<Window.Resources>
+		<Style
+			x:Key="Divider"
+			TargetType="{x:Type Border}">
+			<Setter Property="Height" Value="1" />
+			<Setter Property="Margin" Value="-20 0 -20 2" />
+			<Setter Property="VerticalAlignment" Value="Bottom" />
+			<Setter Property="Background" Value="#ff808890" />
+		</Style>
+	</Window.Resources>
+
+	<Grid
+		Margin="4">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="auto" />
+		</Grid.RowDefinitions>
+
+		<!-- Evidences -->
+		<ContentPresenter
+			Content="{Binding Evidences}" />
+
+		<Border
+			Grid.Row="1"
+			Style="{StaticResource Divider}" />
+
+		<!-- Ghosts -->
+		<ContentPresenter
+			Grid.Row="2"
+			Content="{Binding Ghosts}" />
+
+		<Border
+			Grid.Row="3"
+			Style="{StaticResource Divider}" />
+
+		<Grid
+			Grid.Row="4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="10" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="10" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+
+			<!-- Normal speed toggle -->
+			<c:SelectableControl
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Margin="0 -1 0 0"
+				Content="Normal Speed"
+				SelectableType="WithoutCircle"
+				ToolTipService.InitialShowDelay="200"
+				IsSelected="{Binding IsNormalSpeed}">
+				<c:SelectableControl.ToolTip>
+					<ToolTip
+						MaxWidth="400">
+						<TextBlock
+							TextWrapping="Wrap"
+							Text="Updates available ghosts based on whether or not the ghost is normal speed." />
+					</ToolTip>
+				</c:SelectableControl.ToolTip>
+			</c:SelectableControl>
+
+			<!-- Timer -->
+			<c:SelectableControl
+				Grid.Column="2"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				SelectionMode="NoUnselect"
+				SelectableType="WithoutCircle"
+				DefaultBrush="#ff888888"
+				ToolTipService.InitialShowDelay="200"
+				IsSelected="{Binding IsTimerRunning}">
+				<TextBlock>
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}{0}:{1:00}">
+							<Binding Path="TimerElapsedTime.Minutes" />
+							<Binding Path="TimerElapsedTime.Seconds" />
+						</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+				<c:SelectableControl.ToolTip>
+					<ToolTip>
+						<TextBlock
+							Text="General purpose timer" />
+					</ToolTip>
+				</c:SelectableControl.ToolTip>
+			</c:SelectableControl>
+
+			<!-- Sanity -->
+			<Grid
+				Grid.Column="4"
+				ToolTipService.InitialShowDelay="200">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto" />
+					<ColumnDefinition Width="100" />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock
+					VerticalAlignment="Center"
+					Margin="0 1 0 0"
+					Text="Sanity">
+				</TextBlock>
+
+				<c:SelectableControl
+					Grid.Column="1"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Margin="0 -2 2 0"
+					Padding="0"
+					SelectionMode="NoUnselect"
+					SelectableType="WithoutCircle"
+					DefaultBrush="#ff888888"
+					IsSelected="{Binding IsSanityDraining}"
+					MouseDown="Sanity_MouseDown">
+					<TextBlock
+						Text="{Binding CurrentSanity, StringFormat={}{0:P2}}" />
+				</c:SelectableControl>
+
+				<Grid.ToolTip>
+					<ToolTip
+						MaxWidth="400">
+						<TextBlock
+							TextWrapping="Wrap"
+							Text="Simulated sanity drain. Speed depends on game settings. Does not account for large room light reduction or firelight proximity reduction." />
+					</ToolTip>
+				</Grid.ToolTip>
+			</Grid>
+		</Grid>
+
+		<Grid
+			Grid.Row="6">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="140" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+
+			<!-- Settings -->
+			<Border
+				Margin="-6 0 0 -6"
+				Padding="6 0 0 8"
+				BorderBrush="#ff808890"
+				BorderThickness="0 1 1 0">
+				<Grid
+					Margin="0 6 4 0">
+					<Grid.Resources>
+						<Style
+							TargetType="{x:Type ToggleButton}"
+							BasedOn="{StaticResource {x:Type ToggleButton}}">
+							<Setter Property="Width" Value="24" />
+							<Setter Property="Height" Value="24" />
+							<Setter Property="ToolTipService.InitialShowDelay" Value="200" />
+						</Style>
+					</Grid.Resources>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="auto" />
+						<ColumnDefinition Width="10" />
+						<ColumnDefinition Width="auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="auto" />
+						<ColumnDefinition Width="10" />
+						<ColumnDefinition Width="auto" />
+					</Grid.ColumnDefinitions>
+
+					<ToggleButton
+						IsChecked="{Binding IsSettingsDialogOpen}"
+						ToolTip="Game Settings">
+						<Image
+							Stretch="None"
+							Source="{x:Static local:Images+Icons.Settings}" />
+					</ToggleButton>
+
+					<ToggleButton
+						Grid.Column="2"
+						IsChecked="{Binding AreGlobalShortcutsEnabled}"
+						ToolTip="Enable/Disable keyboard shortcuts">
+						<Image
+							Stretch="None"
+							Source="{x:Static local:Images+Icons.Keyboard}" />
+					</ToggleButton>
+
+					<ToggleButton
+						Grid.Column="4"
+						IsChecked="{Binding IsOverlayWindowVisible}"
+						ToolTip="Show/Hide overlay window">
+						<Image
+							Stretch="None"
+							Source="{x:Static local:Images+Icons.Dialog}" />
+					</ToggleButton>
+
+					<ToggleButton
+						Grid.Column="6"
+						IsChecked="{Binding IsSanityVisible}"
+						ToolTip="Show/Hide sanity in overlay window">
+						<Image
+							Stretch="None"
+							Source="{x:Static local:Images+Icons.Sanity}" />
+					</ToggleButton>
+
+				</Grid>
+			</Border>
+
+			<!-- Reset and additional sanity controls -->
+			<Grid
+				Margin="0 -10 10 0"
+				Grid.Column="2">
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto" />
+					<ColumnDefinition Width="66" />
+					<ColumnDefinition Width="auto" />
+					<ColumnDefinition Width="20" />
+					<ColumnDefinition Width="auto" />
+				</Grid.ColumnDefinitions>
+
+				<Button
+					HorizontalAlignment="Left"
+					VerticalAlignment="Center"
+					Margin="0 -1 0 0"
+					Content="Reset"
+					Command="{Binding ResetDataCommand}">
+					<Button.Style>
+						<Style
+							TargetType="{x:Type Button}"
+							BasedOn="{StaticResource ContentOnlyButton}">
+							<Setter Property="Foreground" Value="#ffff8090" />
+							<Style.Triggers>
+								<MultiTrigger>
+									<MultiTrigger.Conditions>
+										<Condition Property="IsEnabled" Value="True" />
+										<Condition Property="IsMouseOver" Value="True" />
+									</MultiTrigger.Conditions>
+									<Setter Property="Foreground" Value="#ffffa0b0" />
+								</MultiTrigger>
+							</Style.Triggers>
+						</Style>
+					</Button.Style>
+				</Button>
+
+				<Button
+					Grid.Column="2"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Center"
+					Margin="0 -1 0 0"
+					Content="-5%"
+					Style="{StaticResource ContentOnlyButton}"
+					Command="{Binding Lose5SanityCommand}" />
+
+				<Button
+					Grid.Column="4"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Center"
+					Margin="0 -1 0 0"
+					Content="+Meds"
+					Style="{StaticResource ContentOnlyButton}"
+					Command="{Binding UseSanityMedicationCommand}" />
+
+			</Grid>
+
+		</Grid>
+	</Grid>
+</Window>

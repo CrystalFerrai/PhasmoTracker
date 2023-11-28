@@ -1,0 +1,499 @@
+﻿<!--
+Copyright 2023 Crystal Ferrai
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<Window
+	x:Class="PhasmoTracker.GameSettingsDialog"
+	x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:PhasmoTracker"
+	xmlns:c="clr-namespace:PhasmoTracker.Controls"
+	xmlns:conv="clr-namespace:PhasmoTracker.Converters"
+    mc:Ignorable="d"
+    Title="PhasmoTracker Game Settings"
+	Background="#ff000000"
+	Width="498"
+	Height="340"
+	ResizeMode="CanMinimize"
+	Style="{StaticResource {x:Type Window}}"
+	d:DataContext="{d:DesignInstance Type={x:Type local:GameSettings}, IsDesignTimeCreatable=False}">
+
+	<Window.Resources>
+		<Style
+			x:Key="OptionSelection"
+			TargetType="{x:Type c:SelectableControl}">
+			<Setter Property="SelectionMode" Value="SelectOnly" />
+			<Setter Property="RejectedHasStrikethrough" Value="False" />
+			<Setter Property="Padding" Value="12 0 13 0" />
+			<Setter Property="ToolTipService.InitialShowDelay" Value="200" />
+		</Style>
+
+		<Style
+			x:Key="OptionButton"
+			TargetType="{x:Type Button}"
+			BasedOn="{StaticResource ContentOnlyButton}">
+			<Setter Property="Width" Value="24" />
+		</Style>
+	</Window.Resources>
+
+    <Grid
+		Margin="20 10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="12" />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="12" />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="12" />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="12" />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="12" />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="auto" />
+		</Grid.ColumnDefinitions>
+
+		<!-- Evidence Count -->
+		<TextBlock
+			VerticalAlignment="Center"
+			Margin="0 1 0 0"
+			Text="Evidence Available" />
+
+		<Grid
+			Grid.Column="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+			
+			<c:SelectableControl
+				Content="0"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding EvidenceCount, Converter={x:Static conv:IntEqualsConverter.Instance}, ConverterParameter=0}" />
+
+			<c:SelectableControl
+				Grid.Column="2"
+				Content="1"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding EvidenceCount, Converter={x:Static conv:IntEqualsConverter.Instance}, ConverterParameter=1}"
+				ToolTip="Insanity" />
+
+			<c:SelectableControl
+				Grid.Column="4"
+				Content="2"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding EvidenceCount, Converter={x:Static conv:IntEqualsConverter.Instance}, ConverterParameter=2}"
+				ToolTip="Nightmare" />
+
+			<c:SelectableControl
+				Grid.Column="6"
+				Content="3"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding EvidenceCount, Converter={x:Static conv:IntEqualsConverter.Instance}, ConverterParameter=3}">
+				<c:SelectableControl.ToolTip>
+					<ToolTip>
+						<TextBlock>
+							<Run Text="Amateur" /><LineBreak />
+							<Run Text="Intermediate" /><LineBreak />
+							<Run Text="Professional" />
+						</TextBlock>
+					</ToolTip>
+				</c:SelectableControl.ToolTip>
+			</c:SelectableControl>
+		</Grid>
+
+		<!-- Multiplayer -->
+		<TextBlock
+			Grid.Row="2"
+			VerticalAlignment="Center"
+			Margin="0 1 0 0"
+			Text="Multiplayer Game" />
+
+		<Grid
+			Grid.Row="2"
+			Grid.Column="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+
+			<c:SelectableControl
+				Content="No"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding IsMultiplayer, Converter={x:Static conv:InverseBoolConverter.Instance}}" />
+
+			<c:SelectableControl
+				Grid.Column="2"
+				Content="Yes"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding IsMultiplayer}" />
+		</Grid>
+		
+		<!-- Map size -->
+		<TextBlock
+			Grid.Row="4"
+			VerticalAlignment="Center"
+			Margin="0 1 0 0"
+			Text="Map Size" />
+
+		<Grid
+			Grid.Row="4"
+			Grid.Column="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+
+			<c:SelectableControl
+				Content="S"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding MapSize, Converter={StaticResource MapSizeConverter}, ConverterParameter={x:Static local:MapSize.Small}}">
+				<c:SelectableControl.ToolTip>
+					<ToolTip
+						Padding="0 2 0 4">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto" />
+								<RowDefinition Height="5" />
+								<RowDefinition Height="auto" />
+							</Grid.RowDefinitions>
+							<TextBlock
+								Margin="8 0"
+								FontWeight="Bold"
+								Text="Small" />
+							<Border
+								Grid.Row="1"
+								VerticalAlignment="Bottom"
+								BorderBrush="#ffa0a0a0"
+								BorderThickness="0 1 0 0" />
+							<TextBlock
+								Grid.Row="2"
+								Margin="8 0">
+								<Run Text="6 Tanglewood Drive" /><LineBreak />
+								<Run Text="10 Ridgeview Court" /><LineBreak />
+								<Run Text="13 Willow Street" /><LineBreak />
+								<Run Text="42 Edgefield Road" /><LineBreak />
+								<Run Text="Bleasedale Farmhouse" /><LineBreak />
+								<Run Text="Camp Woodwind" /><LineBreak />
+								<Run Text="Grafton Farmhouse" /><LineBreak />
+								<Run Text="Sunny Meadows (Restricted)" />
+							</TextBlock>
+						</Grid>
+					</ToolTip>
+				</c:SelectableControl.ToolTip>
+			</c:SelectableControl>
+
+			<c:SelectableControl
+				Grid.Column="2"
+				Content="M"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding MapSize, Converter={StaticResource MapSizeConverter}, ConverterParameter={x:Static local:MapSize.Medium}}">
+				<c:SelectableControl.ToolTip>
+					<ToolTip
+						Padding="0 2 0 4">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto" />
+								<RowDefinition Height="5" />
+								<RowDefinition Height="auto" />
+							</Grid.RowDefinitions>
+							<TextBlock
+								Margin="8 0"
+								FontWeight="Bold"
+								Text="Medium" />
+							<Border
+								Grid.Row="1"
+								VerticalAlignment="Bottom"
+								BorderBrush="#ffa0a0a0"
+								BorderThickness="0 1 0 0" />
+							<TextBlock
+								Grid.Row="2"
+								Margin="8 0">
+								<Run Text="Maple Lodge Campsite" /><LineBreak />
+								<Run Text="Prison" />
+							</TextBlock>
+						</Grid>
+					</ToolTip>
+				</c:SelectableControl.ToolTip>
+			</c:SelectableControl>
+
+			<c:SelectableControl
+				Grid.Column="4"
+				Content="L"
+				Style="{StaticResource OptionSelection}"
+				IsSelected="{Binding MapSize, Converter={StaticResource MapSizeConverter}, ConverterParameter={x:Static local:MapSize.Large}}">
+				<c:SelectableControl.ToolTip>
+					<ToolTip
+						Padding="0 2 0 4">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto" />
+								<RowDefinition Height="5" />
+								<RowDefinition Height="auto" />
+							</Grid.RowDefinitions>
+							<TextBlock
+								Margin="8 0"
+								FontWeight="Bold"
+								Text="Large" />
+							<Border
+								Grid.Row="1"
+								VerticalAlignment="Bottom"
+								BorderBrush="#ffa0a0a0"
+								BorderThickness="0 1 0 0" />
+							<TextBlock
+								Grid.Row="2"
+								Margin="8 0">
+								<Run Text="Brownstone High School" /><LineBreak />
+								<Run Text="Sunny Meadows Mental Institution" />
+							</TextBlock>
+						</Grid>
+					</ToolTip>
+				</c:SelectableControl.ToolTip>
+			</c:SelectableControl>
+
+		</Grid>
+
+		<!-- Starting sanity -->
+		<TextBlock
+			Grid.Row="6"
+			VerticalAlignment="Center"
+			Margin="0 1 0 0"
+			Text="Starting Sanity" />
+
+		<Grid
+			Grid.Row="6"
+			Grid.Column="2">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="50" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+
+			<Button
+				Style="{StaticResource OptionButton}"
+				Command="{Binding DecreaseStartingSanityCommand}">
+				<Path
+					Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+					Data="M 12,0 L 12,20 L 0,10 L 12,0" />
+			</Button>
+
+			<TextBlock
+				Grid.Column="2"
+				HorizontalAlignment="Center"
+				ToolTipService.InitialShowDelay="200"
+				Text="{Binding StartingSanity, StringFormat={}{0:P0}}">
+				<TextBlock.ToolTip>
+					<ToolTip>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="10" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<TextBlock>
+								<Run Text="Amateur" /><LineBreak />
+								<Run Text="Intermediate" /><LineBreak />
+								<Run Text="Professional" /><LineBreak />
+								<Run Text="Nightmare" /><LineBreak />
+								<Run Text="Insanity" />
+							</TextBlock>
+							<TextBlock
+								Grid.Column="2"
+								TextAlignment="Right">
+								<Run Text="100%" /><LineBreak />
+								<Run Text="100%" /><LineBreak />
+								<Run Text="100%" /><LineBreak />
+								<Run Text="100%" /><LineBreak />
+								<Run Text="75%" />
+							</TextBlock>
+						</Grid>
+					</ToolTip>
+				</TextBlock.ToolTip>
+			</TextBlock>
+
+			<Button
+				Grid.Column="4"
+				Style="{StaticResource OptionButton}"
+				Command="{Binding IncreaseStartingSanityCommand}">
+				<Path
+					Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+					Data="M 0,0 L 12,10 L 0,20 L 0,0" />
+			</Button>
+		</Grid>
+
+		<!-- Sanity drain multiplier -->
+		<TextBlock
+			Grid.Row="8"
+			VerticalAlignment="Center"
+			Margin="0 1 0 0"
+			Text="Sanity Drain" />
+
+		<Grid
+			Grid.Row="8"
+			Grid.Column="2">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="50" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+
+			<Button
+				Style="{StaticResource OptionButton}"
+				Command="{Binding DecreaseSanityDrainCommand}">
+				<Path
+					Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+					Data="M 12,0 L 12,20 L 0,10 L 12,0" />
+			</Button>
+
+			<TextBlock
+				Grid.Column="2"
+				HorizontalAlignment="Center"
+				ToolTipService.InitialShowDelay="200"
+				Text="{Binding SanityDrainMultiplier, StringFormat={}{0:P0}}">
+				<TextBlock.ToolTip>
+					<ToolTip>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="10" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<TextBlock>
+								<Run Text="Amateur" /><LineBreak />
+								<Run Text="Intermediate" /><LineBreak />
+								<Run Text="Professional" /><LineBreak />
+								<Run Text="Nightmare" /><LineBreak />
+								<Run Text="Insanity" />
+							</TextBlock>
+							<TextBlock
+								Grid.Column="2"
+								TextAlignment="Right">
+								<Run Text="100%" /><LineBreak />
+								<Run Text="150%" /><LineBreak />
+								<Run Text="200%" /><LineBreak />
+								<Run Text="200%" /><LineBreak />
+								<Run Text="200%" />
+							</TextBlock>
+						</Grid>
+					</ToolTip>
+				</TextBlock.ToolTip>
+			</TextBlock>
+
+			<Button
+				Grid.Column="4"
+				Style="{StaticResource OptionButton}"
+				Command="{Binding IncreaseSanityDrainCommand}">
+				<Path
+					Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+					Data="M 0,0 L 12,10 L 0,20 L 0,0" />
+			</Button>
+		</Grid>
+
+		<!-- Sanity medication amount -->
+		<TextBlock
+			Grid.Row="10"
+			VerticalAlignment="Center"
+			Margin="0 1 0 0"
+			Text="Sanity Medication" />
+
+		<Grid
+			Grid.Row="10"
+			Grid.Column="2">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="50" />
+				<ColumnDefinition Width="8" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+
+			<Button
+				Style="{StaticResource OptionButton}"
+				Command="{Binding DecreaseSanityMedicationCommand}">
+				<Path
+					Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+					Data="M 12,0 L 12,20 L 0,10 L 12,0" />
+			</Button>
+
+			<TextBlock
+				Grid.Column="2"
+				HorizontalAlignment="Center"
+				ToolTipService.InitialShowDelay="200"
+				Text="{Binding SanityMedicationAmount, StringFormat={}{0:P0}}">
+				<TextBlock.ToolTip>
+					<ToolTip>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="10" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<TextBlock>
+								<Run Text="Amateur" /><LineBreak />
+								<Run Text="Intermediate" /><LineBreak />
+								<Run Text="Professional" /><LineBreak />
+								<Run Text="Nightmare" /><LineBreak />
+								<Run Text="Insanity" />
+							</TextBlock>
+							<TextBlock
+								Grid.Column="2"
+								TextAlignment="Right">
+								<Run Text="40%" /><LineBreak />
+								<Run Text="35%" /><LineBreak />
+								<Run Text="30%" /><LineBreak />
+								<Run Text="25%" /><LineBreak />
+								<Run Text="20%" />
+							</TextBlock>
+						</Grid>
+					</ToolTip>
+				</TextBlock.ToolTip>
+			</TextBlock>
+
+			<Button
+				Grid.Column="4"
+				Style="{StaticResource OptionButton}"
+				Command="{Binding IncreaseSanityMedicationCommand}">
+				<Path
+					Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+					Data="M 0,0 L 12,10 L 0,20 L 0,0" />
+			</Button>
+		</Grid>
+
+	</Grid>
+</Window>
