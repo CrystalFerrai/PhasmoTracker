@@ -17,7 +17,7 @@ Releases can be found here: [Releases](https://github.com/CrystalFerrai/PhasmoTr
 
 ## Installation
 
-You will need to isntall the latest .NET 7 Desktop Runtime (x64) if you do not already have it. You can find it at [https://dotnet.microsoft.com/en-us/download/dotnet/7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0). Look for the section titled ".NET Desktop Runtime" and click on the installer link that reads "x64".
+You will need to install the latest .NET 7 Desktop Runtime (x64) if you do not already have it. You can find it at [https://dotnet.microsoft.com/en-us/download/dotnet/7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0). Look for the section titled ".NET Desktop Runtime" and click on the installer link that reads "x64".
 
 The app currently does not include an installer. Simply unzip the contents of the release into a folder and run PhasmoTracker.exe.
 
