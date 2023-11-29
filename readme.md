@@ -58,6 +58,8 @@ This feature is more comprehensive than the in-game journal, accounting for avai
 ### Ghost Buttons
 Below the evidence list is a list of all possible ghosts. You can left-click one of these to mark at as the suspected ghost or right-click to cross it out.
 
+You can also hold the Shift keyboard key while hovering your cursor over a ghost to highlight the evidence associated with that ghost.
+
 ### Normal Speed Button
 Left-clicking this button will grey out ghosts that cannot hunt at normal ghost speed. Note that "The Twins" will not be greyed out by this action since it may not always be easy to distinguish normal speed from twin speed.
 
